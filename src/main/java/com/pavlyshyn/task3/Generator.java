@@ -1,8 +1,6 @@
 package com.pavlyshyn.task3;
 
-import javafx.scene.control.RadioButton;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
