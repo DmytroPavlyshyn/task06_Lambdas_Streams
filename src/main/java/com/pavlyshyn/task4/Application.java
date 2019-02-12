@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Application {
-    List<String> readListString() {
+    private List<String> readListString() {
         List<String> strings = new ArrayList<>();
 
         String line;
@@ -20,28 +20,37 @@ public class Application {
             throw new RuntimeException(e);
         }
     }
-   long countDistinctWords(List<String> text){
-        return text.stream().flatMap((line)-> Stream.of(line.split(" "))).distinct().count();
-   }
-   List<String> uniqueWords(List<String> text){
-        return text.stream().flatMap((line)-> Stream.of(line.split(" "))).distinct().sorted().collect(Collectors.toList());
-   }
-    Map<String,Long> countWords(List<String> text){
-        return text.stream().flatMap((line)-> Stream.of(line.split(" ")))
-                .collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+
+    private long countDistinctWords(List<String> text) {
+        return text.stream().flatMap((line) -> Stream.of(line.split(" "))).distinct().count();
     }
-    Map<String,Long> countSymbol(List<String> text){
+
+    private List<String> uniqueWords(List<String> text) {
+        return text.stream().flatMap((line) -> Stream.of(line.split(" "))).distinct().sorted().collect(Collectors.toList());
+    }
+
+    private Map<String, Long> countWords(List<String> text) {
+        return text.stream().flatMap((line) -> Stream.of(line.split(" ")))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    }
+
+    private Map<String, Long> countSymbol(List<String> text) {
         return text.stream()
-                .flatMap((line)-> Stream.of(line.split(" ")))
-                .flatMap(word->Stream.of(word.split("")).filter(ch->!Character.isUpperCase(ch.charAt(0))))
-                .collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+                .flatMap((line) -> Stream.of(line.split(" ")))
+                .flatMap(word -> Stream.of(word.split("")).filter(ch -> !Character.isUpperCase(ch.charAt(0))))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
+
+    public void run() {
+        List<String> list = readListString();
+        System.out.println("Number of unique words: " + countDistinctWords(list));
+        System.out.println("Sorted list of all unique words: " + uniqueWords(list));
+        System.out.println("Word count: " + countWords(list));
+        System.out.println("Symbol count except upper case: " + countSymbol(list));
+    }
+
     public static void main(String[] args) {
         Application application = new Application();
-        //System.out.println(application.readListString());
-        System.out.println(application.countDistinctWords(new ArrayList<>(Arrays.asList("hello 12", "13 hello 12 45 45"))));
-        System.out.println(application.uniqueWords(new ArrayList<>(Arrays.asList("hello 12", "13 hello 12 45 45"))));
-        //---------------------------------------------------------------------------------------------------------
-        System.out.println(application.countSymbol(new ArrayList<>(Arrays.asList("hello 12", "13 heGGllo 12 45 45"))));
+        application.run();
     }
 }
